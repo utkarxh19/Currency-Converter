@@ -1,4 +1,4 @@
-const BASE_URL="https://2024-03-06.currency-api.pages.dev/v1/currencies/eur.json"
+const BASE_URL=""https://api.frankfurter.app/latest""
 
 const dropdowns= document.querySelectorAll(".dropdown select");
 const btn=document.querySelector("form button");
@@ -25,25 +25,34 @@ select.append(newOption);
           updateFlag(evt.target);
     })
 }
-const updateExchangeRate =async() =>{
-    let amount=document.querySelector(".amount input");
-    let amtVal=amount.value;
-    if(amtVal==="" || amtVal<1){
-        amtVal=1;
-        amount.value="1";
+const updateExchangeRate = async () => {
+    let amount = document.querySelector(".amount input");
+    let amtVal = amount.value;
+    if (amtVal === "" || amtVal < 1) {
+      amtVal = 1;
+      amount.value = "1";
     }
-
-  
     
-     const URL = `${BASE_URL}?from=${fromCurr.value.toLowerCase()}&to=${toCurr.value.toLowerCase()}`;
-    let response = await fetch(URL);
-    let data =await response.json();
-    let rate=data[toCurr.value.toLowerCase()];
-    // console.log(data);
-    let finalAmount=amtVal*rate;
-
-    msg.innerText=`${amtVal} ${fromCurr.value} = ${finalAmount} ${toCurr.value}`
-}
+    const fromCurrency = fromCurr.value.toUpperCase();
+    const toCurrency = toCurr.value.toUpperCase();
+    
+    const URL = `${BASE_URL}?amount=${amtVal}&from=${fromCurrency}&to=${toCurrency}`;
+    
+    try {
+      let response = await fetch(URL);
+      if (!response.ok) {
+        throw new Error(`Error fetching data: ${response.statusText}`);
+      }
+      
+      let data = await response.json();
+      let rate = data.rates[toCurrency];
+  
+      let finalAmount = amtVal * rate;
+      msg.innerText = `${amtVal} ${fromCurrency} = ${finalAmount.toFixed(2)} ${toCurrency}`;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
 
 const updateFlag =(element)=>{
