@@ -1,4 +1,4 @@
-const BASE_URL="https://api.frankfurter.app/latest"
+const BASE_URL="https://api.frankfurter.app/latest";
 
 const dropdowns= document.querySelectorAll(".dropdown select");
 const btn=document.querySelector("form button");
@@ -74,4 +74,3 @@ btn.addEventListener("click", (evt)=>{
 window.addEventListener("load",()=>{
     updateExchangeRate();
 });
-
